@@ -34,6 +34,8 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
+import { ScaffolderFieldExtensions } from '@backstage/plugin-scaffolder-react';
+import { UniqueEntityPicker } from './components/scaffolder/UniqueEntityPicker';
 
 const app = createApp({
   apis,
@@ -73,7 +75,11 @@ const routes = (
         <ReportIssue />
       </TechDocsAddons>
     </Route>
-    <Route path="/create" element={<NextScaffolderPage />} />
+    <Route path="/create" element={<NextScaffolderPage />}>
+      <ScaffolderFieldExtensions>
+        <UniqueEntityPicker />
+      </ScaffolderFieldExtensions>
+    </Route>
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route
       path="/tech-radar"

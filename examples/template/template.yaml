@@ -20,7 +20,7 @@ spec:
           title: Name
           type: string
           description: Unique name of the component
-          ui:field: EntityNamePicker
+          ui:field: UniqueEntityPicker
         description:
           title: Description
           type: string
