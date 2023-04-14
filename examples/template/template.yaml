@@ -12,7 +12,7 @@ spec:
   # These parameters are used to generate the input form in the frontend, and are
   # used to gather input data for the execution of the template.
   parameters:
-    - title: Fill in some steps
+    - title: Basic information
       required:
         - name
       properties:
@@ -20,9 +20,13 @@ spec:
           title: Name
           type: string
           description: Unique name of the component
-          ui:autofocus: true
-          ui:options:
-            rows: 5
+          ui:field: EntityNamePicker
+        description:
+          title: Description
+          type: string
+          description: A simple description of the example component
+          ui:autocomplete: off
+
     - title: Choose a location
       required:
         - repoUrl
@@ -40,12 +44,11 @@ spec:
   steps:
     # Each step executes an action, in this case one templates files into the working directory.
     - id: fetch-base
-      name: Fetch Base
+      name: Fetch Boilerplate and Template
       action: fetch:template
       input:
         url: ./content
-        values:
-          name: ${{ parameters.name }}
+        values: ${{ parameters }}
 
     # This step publishes the contents of the working directory to GitHub.
     - id: publish
