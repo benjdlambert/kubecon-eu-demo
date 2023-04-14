@@ -43,6 +43,7 @@ import {
   EntityCatalogGraphCard,
 } from '@backstage/plugin-catalog-graph';
 import {
+  Entity,
   RELATION_API_CONSUMED_BY,
   RELATION_API_PROVIDED_BY,
   RELATION_CONSUMES_API,
@@ -55,13 +56,32 @@ import {
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
+import { TechdocsEmbeddableWorkflow } from './TechdocsEmbeddableWorkflow';
+import { ScaffolderFieldExtensions } from '@backstage/plugin-scaffolder-react';
+import { EntityPickerFieldExtension } from '@backstage/plugin-scaffolder';
+
+const techdocsAnnotationSet = (entity: Entity) =>
+  !!entity.metadata.annotations?.['backstage.io/techdocs-ref'];
+
+const techdocsNotSetup = (entity: Entity) => !techdocsAnnotationSet(entity);
 
 const techdocsContent = (
-  <EntityTechdocsContent>
-    <TechDocsAddons>
-      <ReportIssue />
-    </TechDocsAddons>
-  </EntityTechdocsContent>
+  <EntitySwitch>
+    <EntitySwitch.Case if={techdocsAnnotationSet}>
+      <EntityTechdocsContent>
+        <TechDocsAddons>
+          <ReportIssue />
+        </TechDocsAddons>
+      </EntityTechdocsContent>
+    </EntitySwitch.Case>
+    <EntitySwitch.Case if={techdocsNotSetup}>
+      <TechdocsEmbeddableWorkflow>
+        <ScaffolderFieldExtensions>
+          <EntityPickerFieldExtension />
+        </ScaffolderFieldExtensions>
+      </TechdocsEmbeddableWorkflow>
+    </EntitySwitch.Case>
+  </EntitySwitch>
 );
 
 const cicdContent = (

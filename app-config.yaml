@@ -81,9 +81,18 @@ catalog:
     - type: file
       target: ../../examples/entities.yaml
 
+    - type: url
+      target: https://github.com/benjdlambert/kubecon-eu-demo/blob/main/catalog-info.yaml
+
     # Local example template
     - type: file
       target: ../../examples/template/template.yaml
+      rules:
+        - allow: [Template]
+
+    # Local example template
+    - type: file
+      target: ../../examples/techdocs-template/template.yaml
       rules:
         - allow: [Template]
 

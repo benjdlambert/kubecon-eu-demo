@@ -1,0 +1,77 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
+kind: Template
+metadata:
+  name: techdocs-template
+  title: Techdocs Boilerplate
+  description: Add the boilerplate for adding techdocs to your components
+spec:
+  owner: user:guest
+  type: service
+
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
+  parameters:
+    - title: Basic Site information
+      required:
+        - site_name
+        - site_description
+      properties:
+        entity:
+          title: Entity
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            allowedKinds: ['Component']
+        site_name:
+          title: Site name
+          type: string
+          description: The name for your techdocs site
+        site_description:
+          title: Site description
+          type: string
+          description: A simple description of the example component
+
+  steps:
+    # Each step executes an action, in this case one templates files into the working directory.
+    - id: getEntity
+      name: Get Entity
+      action: catalog:fetch
+      input:
+        entityRef: ${{ parameters.entity }}
+
+    - id: fetchUpstream
+      name: Fetch Entity Repository
+      action: fetch:plain
+      input:
+        url: ${{ steps.getEntity.output.entity | getEntityLocation }}
+
+    - id: fetchBase
+      name: Fetch Boilerplate and Template
+      action: fetch:template
+      input:
+        url: ./content
+        values: ${{ parameters }}
+
+    - id: addAnnotation
+      name: Add techdocs annotations
+      action: acme:techdocs:annotate
+
+    # This step publishes the contents of the working directory to GitHub.
+    - id: publish
+      name: Publish
+      action: publish:github:pull-request
+      input:
+        repoUrl: ${{ steps.getEntity.output.entity | getRepoUrl }}
+        description: This pull request enables documentation for this project
+        branchName: techdocs
+        title: Enable Techdocs
+        sourcePath: .
+        targetPath: .
+
+  # Outputs are displayed to the user after a successful execution of the template.
+  output:
+    links:
+      - title: Pull Request
+        icon: github
+        url: ${{ steps['publish'].output.remoteUrl }}
