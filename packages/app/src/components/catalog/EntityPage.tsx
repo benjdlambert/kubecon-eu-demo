@@ -66,22 +66,22 @@ const techdocsAnnotationSet = (entity: Entity) =>
 const techdocsNotSetup = (entity: Entity) => !techdocsAnnotationSet(entity);
 
 const techdocsContent = (
-  <EntitySwitch>
-    <EntitySwitch.Case if={techdocsAnnotationSet}>
-      <EntityTechdocsContent>
-        <TechDocsAddons>
-          <ReportIssue />
-        </TechDocsAddons>
-      </EntityTechdocsContent>
-    </EntitySwitch.Case>
-    <EntitySwitch.Case if={techdocsNotSetup}>
-      <TechdocsEmbeddableWorkflow>
-        <ScaffolderFieldExtensions>
-          <EntityPickerFieldExtension />
-        </ScaffolderFieldExtensions>
-      </TechdocsEmbeddableWorkflow>
-    </EntitySwitch.Case>
-  </EntitySwitch>
+  // <EntitySwitch>
+  //   <EntitySwitch.Case if={techdocsAnnotationSet}>
+  <EntityTechdocsContent>
+    <TechDocsAddons>
+      <ReportIssue />
+    </TechDocsAddons>
+  </EntityTechdocsContent>
+  //   </EntitySwitch.Case>
+  //   <EntitySwitch.Case if={techdocsNotSetup}>
+  //     <TechdocsEmbeddableWorkflow>
+  //       <ScaffolderFieldExtensions>
+  //         <EntityPickerFieldExtension />
+  //       </ScaffolderFieldExtensions>
+  //     </TechdocsEmbeddableWorkflow>
+  //   </EntitySwitch.Case>
+  // </EntitySwitch>
 );
 
 const cicdContent = (

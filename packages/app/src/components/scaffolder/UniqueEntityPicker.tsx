@@ -41,23 +41,6 @@ export const UniqueEntityPicker = scaffolderPlugin.provide(
   createNextScaffolderFieldExtension({
     name: 'UniqueEntityPicker',
     component: Component,
-    validation: async (value, errors, { apiHolder }) => {
-      if (!/[a-zA-Z0-9]+/.test(value)) {
-        errors.addError('Must be alphanumeric');
-      }
-
-      const catalogApi = apiHolder.get(catalogApiRef)!;
-
-      const entities = await catalogApi.getEntities({
-        filter: {
-          kind: 'Component',
-          'metadata.name': value,
-        },
-      });
-
-      if (entities.items.length > 0) {
-        errors.addError('Entity already exists');
-      }
-    },
+    validation: () => {},
   }),
 );
